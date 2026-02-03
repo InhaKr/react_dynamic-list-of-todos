@@ -4,7 +4,8 @@ import 'bulma/css/bulma.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 
 import { TodoList } from './components/TodoList';
-import { getUser } from './components/services/getUser';
+// import { getUser } from './components/services/getUser';
+import { getUser } from './components/services/user';
 import { TodoFilter } from './components/TodoFilter';
 import { TodoModal } from './components/TodoModal';
 import { Loader } from './components/Loader';
@@ -24,14 +25,24 @@ export const App: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userLoading, setUserLoading] = useState(false);
 
+  // useEffect(() => {
+  //   setLoad(true);
+
+  //   Promise.all([getTodos()])
+  //     .then(([todosFromServer, usersFromServer]) => {
+  //       setTodos(todosFromServer);
+  //       setUsers(usersFromServer);
+  //     })
+  //     .catch(() => setError('try again later'))
+  //     .finally(() => setLoad(false));
+  // }, []);
+
   useEffect(() => {
     setLoad(true);
+    setError('');
 
-    Promise.all([getTodos()])
-      .then(([todosFromServer, usersFromServer]) => {
-        setTodos(todosFromServer);
-        setUsers(usersFromServer);
-      })
+    getTodos()
+      .then(setTodos)
       .catch(() => setError('try again later'))
       .finally(() => setLoad(false));
   }, []);
@@ -105,7 +116,7 @@ export const App: React.FC = () => {
               {loading && <Loader />}
 
               {!loading && filteredTodos.length > 0 && (
-                <TodoList users={filteredTodos} getModalInfo={getModalInfo} />
+                <TodoList todos={filteredTodos} getModalInfo={getModalInfo} />
               )}
               {!loading && filteredTodos.length === 0 && !error && (
                 <p>There are no users</p>

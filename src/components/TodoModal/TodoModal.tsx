@@ -50,22 +50,26 @@ export const TodoModal: React.FC<TodoModalProps> = ({
             {todo.title}
           </p>
 
-          <p className="block" data-cy="modal-user">
-            {/* <strong className="has-text-success">Done</strong> */}
-            <strong
-              className={cn({
-                'has-text-success': todo.completed,
-                'has-text-danger': !todo.completed,
-              })}
-            >
-              {todo.completed ? 'Done' : 'Planned'}
-            </strong>
-            {' by '}
-            {userLoading && <Loader />}
-            {!userLoading && user && (
+          {userLoading && (
+            <div className="block">
+              <Loader />
+            </div>
+          )}
+
+          {!userLoading && user && (
+            <p className="block" data-cy="modal-user">
+              <strong
+                className={cn({
+                  'has-text-success': todo.completed,
+                  'has-text-danger': !todo.completed,
+                })}
+              >
+                {todo.completed ? 'Done' : 'Planned'}
+              </strong>
+              {' by '}
               <a href={`mailto:${user.email}`}>{user.name}</a>
-            )}
-          </p>
+            </p>
+          )}
         </div>
       </div>
     </div>

@@ -1,12 +1,13 @@
 import React from 'react';
+import cn from 'classnames';
 import { Todo } from '../../types/Todo';
 
 type Props = {
-  users: Todo[];
+  todos: Todo[];
   getModalInfo: (todoId: number) => void;
 };
 
-export const TodoList: React.FC<Props> = ({ users, getModalInfo }) => {
+export const TodoList: React.FC<Props> = ({ todos, getModalInfo }) => {
   return (
     <table className="table is-narrow is-fullwidth">
       <thead>
@@ -23,14 +24,14 @@ export const TodoList: React.FC<Props> = ({ users, getModalInfo }) => {
       </thead>
 
       <tbody>
-        {users.map(user => (
-          <tr key={user.id} data-cy="todo" className="">
+        {todos.map(todo => (
+          <tr key={todo.id} data-cy="todo" className="">
             {/* ID */}
-            <td className="is-vcentered">{user.id}</td>
+            <td className="is-vcentered">{todo.id}</td>
 
             {/* Галочка только если completed */}
             <td className="is-vcentered">
-              {user.completed && (
+              {todo.completed && (
                 <span className="icon" data-cy="iconCompleted">
                   <i className="fas fa-check" />
                 </span>
@@ -40,18 +41,19 @@ export const TodoList: React.FC<Props> = ({ users, getModalInfo }) => {
             {/* Заголовок с цветом */}
             <td className="is-vcentered is-expanded">
               <p
-                className={
-                  user.completed ? 'has-text-success' : 'has-text-danger'
-                }
+                className={cn({
+                  'has-text-success': todo.completed,
+                  'has-text-danger': !todo.completed,
+                })}
               >
-                {user.title}
+                {todo.title}
               </p>
             </td>
 
             {/* Кнопка */}
             <td className="has-text-right is-vcentered">
               <button
-                onClick={() => getModalInfo(user.id)}
+                onClick={() => getModalInfo(todo.id)}
                 data-cy="selectButton"
                 className="button"
                 type="button"

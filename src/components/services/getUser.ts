@@ -4,7 +4,6 @@
 //   );
 // };
 
-
 export function getUser(userId: number): Promise<User> {
   return fetch('http://localhost:5174/api/users.json')
     .then(response => response.json())
