@@ -1,18 +1,22 @@
 import React from 'react';
-// import { Loader } from '../Loader';
+import cn from 'classnames';
+import { Todo } from '../../types/Todo';
+import { User } from '../../types/User';
+import { Loader } from '../../components/Loader';
 
 type TodoModalProps = {
   modal: boolean;
   todo: Todo | undefined;
   user: User | undefined;
+  userLoading: boolean;
   closeModal: () => void;
 };
 
 export const TodoModal: React.FC<TodoModalProps> = ({
-  // users,
+  user,
   modal,
   todo,
-  user,
+  userLoading,
   closeModal,
 }) => {
   if (!modal || !todo) {
@@ -48,11 +52,19 @@ export const TodoModal: React.FC<TodoModalProps> = ({
 
           <p className="block" data-cy="modal-user">
             {/* <strong className="has-text-success">Done</strong> */}
-            <strong className="has-text-danger">
+            <strong
+              className={cn({
+                'has-text-success': todo.completed,
+                'has-text-danger': !todo.completed,
+              })}
+            >
               {todo.completed ? 'Done' : 'Planned'}
             </strong>
             {' by '}
-            {user && <a href={`mailto:${user.email}`}>{user.name}</a>}{' '}
+            {userLoading && <Loader />}
+            {!userLoading && user && (
+              <a href={`mailto:${user.email}`}>{user.name}</a>
+            )}
           </p>
         </div>
       </div>
